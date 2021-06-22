@@ -17,6 +17,15 @@ namespace BankKata.Tests.UnitTests
 		}
 
 		[Test]
+		public void Should_have_restriction_by_max_deposit()
+		{
+			var transactionMoq = new Mock<ITransactionStorage>();
+			var account = CreateAccountEntity(transactionMoq, Statement);
+
+			Assert.Throws<DepositNotAllowedException>(() => account.Deposit(100001));
+		}
+
+		[Test]
 		public void Should_NOT_have_negative_balance()
 		{
 			var transactionMoq = new Mock<ITransactionStorage>();
@@ -25,15 +34,6 @@ namespace BankKata.Tests.UnitTests
 			Assert.AreEqual(0, account.Balance);
 
 			Assert.Throws<WithdrawNotAllowedException>(() => account.Withdraw(500));
-		}
-
-		[Test]
-		public void Should_have_restriction_by_max_deposit()
-		{
-			var transactionMoq = new Mock<ITransactionStorage>();
-			var account = CreateAccountEntity(transactionMoq, Statement);
-
-			Assert.Throws<DepositNotAllowedException>(() => account.Deposit(100001));
 		}
 	}
 }

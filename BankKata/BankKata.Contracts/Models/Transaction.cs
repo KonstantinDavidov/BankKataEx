@@ -1,4 +1,6 @@
-﻿namespace BankKata.Contracts.Models
+﻿using System;
+
+namespace BankKata.Contracts.Models
 {
 	public class Transaction
 	{
@@ -12,6 +14,24 @@
 		{
 			_date = dateStr;
 			_amount = amount;
+		}
+
+		protected bool Equals(Transaction other)
+		{
+			return _date == other._date && _amount == other._amount;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != this.GetType()) return false;
+			return Equals((Transaction)obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(_date, _amount);
 		}
 	}
 }
