@@ -23,7 +23,7 @@ namespace BankKata.Tests
 				var transactionRep = new TransactionInMemoryRepository(clockMock.Object);
 				var outputWriter = new Mock<IOutputWriter>();
 				var statement = new StatementPrinter(outputWriter.Object);
-				var account = new StudentAccount(1, transactionRep, statement);
+				var account = new StudentAccount(1, 1, transactionRep, statement);
 
 				account.Deposit(1000);
 				account.Deposit(2000);

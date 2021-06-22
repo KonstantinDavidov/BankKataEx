@@ -1,4 +1,5 @@
 ﻿using BankAccount.Common;
+using BankKata.Contracts.Enums;
 using BankKata.Contracts.Interfaces;
 
 namespace BankKata.Contracts.Models
@@ -9,9 +10,10 @@ namespace BankKata.Contracts.Models
 	public class GiroAccount : Account
 	{
 		protected override int MaxAllowedBalance => Constants.MaxAllowedGiroAccountBalance;
+		public override AccountType AccountType => AccountType.Giro;
 
-		public GiroAccount(ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)
-			: base(transactionStorage, statementPrinter)
+		public GiroAccount(int accountId, ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)
+			: base(accountId, transactionStorage, statementPrinter)
 		{
 		}
 	}

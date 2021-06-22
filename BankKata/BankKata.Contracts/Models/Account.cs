@@ -1,21 +1,24 @@
-﻿using System;
+﻿using BankKata.Contracts.Enums;
 using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Interfaces;
 
 namespace BankKata.Contracts.Models
 {
-	public class Account
+	public abstract class Account
 	{
 		private readonly ITransactionStorage _transactionStorage;
 		private readonly IStatementPrinter _statementPrinter;
 
+		public int Id { get; }
+		public int Balance { get; protected set; }
+		public abstract AccountType AccountType { get; }
+
 		protected virtual int MaxAllowedBalance => int.MaxValue;
 		protected virtual int MinAllowedBalance => 0;
 
-		public int Balance { get; protected set; }
-
-		public Account(ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)
+		protected Account(int id, ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)
 		{
+			Id = id;
 			_transactionStorage = transactionStorage;
 			_statementPrinter = statementPrinter;
 		}

@@ -1,4 +1,5 @@
 ﻿using BankAccount.Common;
+using BankKata.Contracts.Enums;
 using BankKata.Contracts.Interfaces;
 
 namespace BankKata.Contracts.Models
@@ -10,11 +11,12 @@ namespace BankKata.Contracts.Models
 	public class BusinessAccount : Account
 	{
 		protected override int MaxAllowedBalance => Constants.MaxAllowedBusinessAccountBalance;
+		public override AccountType AccountType => AccountType.Business;
 
 		public int BusinessId { get; }
 
-		public BusinessAccount(int businessId, ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)
-			: base(transactionStorage, statementPrinter)
+		public BusinessAccount(int businessId, int accountId, ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)
+			: base(accountId, transactionStorage, statementPrinter)
 		{
 			BusinessId = businessId;
 		}

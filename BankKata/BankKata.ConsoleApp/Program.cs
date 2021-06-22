@@ -17,7 +17,7 @@ namespace BankKata.ConsoleApp
 			var console = new ConsoleOutputWriter();
 			var statementPrinter = new StatementPrinter(console);
 
-			var account = new StudentAccount(1, transactionStore, statementPrinter);
+			var account = new StudentAccount(1, 1, transactionStore, statementPrinter);
 
 			account.Deposit(1000);
 			account.Withdraw(300);

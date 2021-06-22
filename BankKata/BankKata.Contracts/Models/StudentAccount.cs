@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BankKata.Contracts.Enums;
 using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Interfaces;
 
@@ -13,10 +14,12 @@ namespace BankKata.Contracts.Models
 	public class StudentAccount : Account
 	{
 		protected override int MinAllowedBalance => int.MinValue;
+		public override AccountType AccountType => AccountType.Student;
 
 		public int StudentId { get; }
 
-		public StudentAccount(int studentId, ITransactionStorage transactionStorage, IStatementPrinter statementPrinter) : base(transactionStorage, statementPrinter)
+		public StudentAccount(int studentId, int accountId, ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)
+			: base(accountId, transactionStorage, statementPrinter)
 		{
 			StudentId = studentId;
 		}

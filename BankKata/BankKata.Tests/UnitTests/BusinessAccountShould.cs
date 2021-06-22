@@ -13,7 +13,7 @@ namespace BankKata.Tests.UnitTests
 	{
 		protected override Account CreateAccountEntity(Mock<ITransactionStorage> transactionMoq, IStatementPrinter statementPrinter)
 		{
-			return new BusinessAccount(1, transactionMoq.Object, statementPrinter);
+			return new BusinessAccount(1, 1, transactionMoq.Object, statementPrinter);
 		}
 
 		[Test]
