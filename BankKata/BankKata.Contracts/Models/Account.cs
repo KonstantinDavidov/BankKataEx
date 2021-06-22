@@ -24,7 +24,7 @@ namespace BankKata.Contracts.Models
 		{
 			if (amount <= 0)
 			{
-				throw new ArgumentNullException(nameof(amount));
+				throw new DepositNotAllowedException(nameof(amount));
 			}
 
 			if (!IsDepositAllowed(amount))
