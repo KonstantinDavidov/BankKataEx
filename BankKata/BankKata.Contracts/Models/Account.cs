@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BankKata.Contracts.Exceptions;
+﻿using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Interfaces;
 
 namespace BankKata.Contracts.Models
@@ -9,10 +6,12 @@ namespace BankKata.Contracts.Models
 	public class Account
 	{
 		private readonly ITransactionStorage _transactionStorage;
+		private readonly IStatementPrinter _statementPrinter;
 
-		public Account(ITransactionStorage transactionStorage)
+		public Account(ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)
 		{
 			_transactionStorage = transactionStorage;
+			_statementPrinter = statementPrinter;
 		}
 
 		public void Deposit(int amount)
@@ -37,7 +36,7 @@ namespace BankKata.Contracts.Models
 
 		public void PrintStatement()
 		{
-			throw new NotImplementedException();
+			_statementPrinter.Print(_transactionStorage.AllTransactions());
 		}
 	}
 }
