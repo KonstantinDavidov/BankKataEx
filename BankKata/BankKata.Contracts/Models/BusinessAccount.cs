@@ -1,4 +1,5 @@
-﻿using BankKata.Contracts.Interfaces;
+﻿using BankAccount.Common;
+using BankKata.Contracts.Interfaces;
 
 namespace BankKata.Contracts.Models
 {
@@ -8,6 +9,8 @@ namespace BankKata.Contracts.Models
 	/// </summary>
 	public class BusinessAccount : Account
 	{
+		protected override int MaxAllowedBalance => Constants.MaxAllowedBusinessAccountBalance;
+
 		public int BusinessId { get; }
 
 		public BusinessAccount(int businessId, ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)

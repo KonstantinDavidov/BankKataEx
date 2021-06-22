@@ -12,6 +12,8 @@ namespace BankKata.Contracts.Models
 	/// </summary>
 	public class StudentAccount : Account
 	{
+		protected override int MinAllowedBalance => int.MinValue;
+
 		public int StudentId { get; }
 
 		public StudentAccount(int studentId, ITransactionStorage transactionStorage, IStatementPrinter statementPrinter) : base(transactionStorage, statementPrinter)

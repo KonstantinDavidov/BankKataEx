@@ -8,6 +8,11 @@ namespace BankKata.Contracts.Models
 		private readonly ITransactionStorage _transactionStorage;
 		private readonly IStatementPrinter _statementPrinter;
 
+		protected virtual int MaxAllowedBalance => int.MaxValue;
+		protected virtual int MinAllowedBalance => 0;
+
+		public int Balance { get; protected set; }
+
 		public Account(ITransactionStorage transactionStorage, IStatementPrinter statementPrinter)
 		{
 			_transactionStorage = transactionStorage;
@@ -21,6 +26,7 @@ namespace BankKata.Contracts.Models
 				throw new DepositNotAllowedException("Deposit amount should be a positive number.");
 			}
 
+			Balance += amount;
 			_transactionStorage.Add(amount);
 		}
 
@@ -31,12 +37,28 @@ namespace BankKata.Contracts.Models
 				throw new WithdrawNotAllowedException("Withdrawal amount should be a positive number.");
 			}
 
+			if (!IsWithdrawAllowed(amount))
+			{
+				throw new WithdrawNotAllowedException("Withdrawal is not allowed.");
+			}
+
+			Balance -= amount;
 			_transactionStorage.Add(-amount);
 		}
 
 		public void PrintStatement()
 		{
 			_statementPrinter.Print(_transactionStorage.AllTransactions());
+		}
+
+		/// <summary>
+		/// Validates whether a withdrawal operation allowed or not.
+		/// </summary>
+		private bool IsWithdrawAllowed(int amount)
+		{
+			var balanceAfterWithdrawal = Balance - amount;
+
+			return balanceAfterWithdrawal >= MinAllowedBalance;
 		}
 	}
 }
