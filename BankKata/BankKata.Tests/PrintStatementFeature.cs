@@ -1,3 +1,4 @@
+using BankKata.Contracts.Formatters;
 using BankKata.Contracts.Interfaces;
 using BankKata.Contracts.Models;
 using BankKata.Contracts.Storages;
@@ -21,7 +22,8 @@ namespace BankKata.Tests
 
 				var transactionRep = new TransactionInMemoryRepository(clockMock.Object);
 				var outputWriter = new Mock<IOutputWriter>();
-				var account = new StudentAccount(1, transactionRep);
+				var statement = new StatementPrinter(outputWriter.Object);
+				var account = new StudentAccount(1, transactionRep, statement);
 
 				account.Deposit(1000);
 				account.Deposit(2000);

@@ -14,7 +14,7 @@ namespace BankKata.Contracts.Models
 	{
 		public int StudentId { get; }
 
-		public StudentAccount(int studentId, ITransactionStorage transactionStorage) : base(transactionStorage)
+		public StudentAccount(int studentId, ITransactionStorage transactionStorage, IStatementPrinter statementPrinter) : base(transactionStorage, statementPrinter)
 		{
 			StudentId = studentId;
 		}
