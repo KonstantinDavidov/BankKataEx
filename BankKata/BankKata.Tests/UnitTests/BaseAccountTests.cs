@@ -33,5 +33,26 @@ namespace BankKata.Tests.UnitTests
 
 			Assert.Throws<DepositNotAllowedException>(() => account.Deposit(-100));
 		}
+
+		[Test]
+		public void Should_store_withdraw()
+		{
+			var transactionMoq = new Mock<ITransactionStorage>();
+			var account = CreateAccountEntity(transactionMoq);
+
+			account.Deposit(100);
+			account.Withdraw(100);
+
+			transactionMoq.Verify(transaction => transaction.Add(-100), Times.Once());
+		}
+
+		[Test]
+		public void Should_throw_withdraw_exception()
+		{
+			var transactionMoq = new Mock<ITransactionStorage>();
+			var account = CreateAccountEntity(transactionMoq);
+
+			Assert.Throws<WithdrawNotAllowedException>(() => account.Withdraw(-100));
+		}
 	}
 }

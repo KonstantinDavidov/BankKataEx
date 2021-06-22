@@ -19,7 +19,7 @@ namespace BankKata.Contracts.Models
 		{
 			if (amount <= 0)
 			{
-				throw new DepositNotAllowedException("Deposit is not allowed.");
+				throw new DepositNotAllowedException("Deposit amount should be a positive number.");
 			}
 
 			_transactionStorage.Add(amount);
@@ -27,7 +27,12 @@ namespace BankKata.Contracts.Models
 
 		public void Withdraw(int amount)
 		{
-			throw new NotImplementedException();
+			if (amount <= 0)
+			{
+				throw new WithdrawNotAllowedException("Withdrawal amount should be a positive number.");
+			}
+
+			_transactionStorage.Add(-amount);
 		}
 
 		public void PrintStatement()
