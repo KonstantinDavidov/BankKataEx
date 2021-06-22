@@ -8,3 +8,4 @@
 obj/
 bin/
 *.dll
+/BankKata/BankKata.sln.DotSettings.user

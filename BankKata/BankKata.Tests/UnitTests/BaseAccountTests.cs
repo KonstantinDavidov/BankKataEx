@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Interfaces;
 using BankKata.Contracts.Models;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
@@ -22,6 +23,15 @@ namespace BankKata.Tests.UnitTests
 			account.Deposit(100);
 
 			transactionMoq.Verify(transaction => transaction.Add(100), Times.Once());
+		}
+
+		[Test]
+		public void Should_throw_deposit_exception()
+		{
+			var transactionMoq = new Mock<ITransactionStorage>();
+			var account = CreateAccountEntity(transactionMoq);
+
+			Assert.Throws<DepositNotAllowedException>(() => account.Deposit(-100));
 		}
 	}
 }
