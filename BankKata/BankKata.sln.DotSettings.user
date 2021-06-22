@@ -2,5 +2,6 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e32c2546_002D09e0_002D4d89_002D8ca7_002D6e65941ef590/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PrintStatementBaseTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::E1961C14-0C73-486E-947F-2B0EB870739B::.NETCoreApp,Version=v3.1::BankKata.Tests.Tests+PrintStatementFeature.PrintStatementBaseTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::E1961C14-0C73-486E-947F-2B0EB870739B::.NETCoreApp,Version=v3.1::BankKata.Tests.UnitTests.StudentAccountShould.Should_store_deposit&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
