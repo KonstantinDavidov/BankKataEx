@@ -26,5 +26,14 @@ namespace BankKata.Tests.UnitTests
 
 			Assert.Throws<WithdrawNotAllowedException>(() => account.Withdraw(500));
 		}
+
+		[Test]
+		public void Should_have_restriction_by_max_deposit()
+		{
+			var transactionMoq = new Mock<ITransactionStorage>();
+			var account = CreateAccountEntity(transactionMoq, Statement);
+
+			Assert.Throws<DepositNotAllowedException>(() => account.Deposit(100001));
+		}
 	}
 }

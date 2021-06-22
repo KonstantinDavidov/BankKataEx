@@ -1,4 +1,5 @@
-﻿using BankKata.Contracts.Exceptions;
+﻿using System;
+using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Interfaces;
 
 namespace BankKata.Contracts.Models
@@ -23,13 +24,18 @@ namespace BankKata.Contracts.Models
 		{
 			if (amount <= 0)
 			{
-				throw new DepositNotAllowedException("Deposit amount should be a positive number.");
+				throw new ArgumentNullException(nameof(amount));
+			}
+
+			if (!IsDepositAllowed(amount))
+			{
+				throw new DepositNotAllowedException("Deposit is not allowed.");
 			}
 
 			Balance += amount;
 			_transactionStorage.Add(amount);
 		}
-
+		
 		public void Withdraw(int amount)
 		{
 			if (amount <= 0)
@@ -59,6 +65,13 @@ namespace BankKata.Contracts.Models
 			var balanceAfterWithdrawal = Balance - amount;
 
 			return balanceAfterWithdrawal >= MinAllowedBalance;
+		}
+
+		private bool IsDepositAllowed(int amount)
+		{
+			var balanceAfterDeposit = Balance + amount;
+
+			return balanceAfterDeposit <= MaxAllowedBalance;
 		}
 	}
 }
