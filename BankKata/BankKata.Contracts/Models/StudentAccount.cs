@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BankKata.Contracts.Interfaces;
 
 namespace BankKata.Contracts.Models
 {
@@ -10,10 +11,13 @@ namespace BankKata.Contracts.Models
 	/// </summary>
 	public class StudentAccount
 	{
+		private readonly ITransactionStorage _transactionStorage;
+
 		public int StudentId { get; }
 
-		public StudentAccount(int studentId)
+		public StudentAccount(int studentId, ITransactionStorage transactionStorage)
 		{
+			_transactionStorage = transactionStorage;
 			StudentId = studentId;
 		}
 

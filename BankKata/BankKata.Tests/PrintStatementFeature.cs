@@ -1,5 +1,6 @@
 using BankKata.Contracts.Interfaces;
 using BankKata.Contracts.Models;
+using BankKata.Contracts.Storages;
 using Moq;
 using NUnit.Framework;
 
@@ -12,8 +13,15 @@ namespace BankKata.Tests
 			[Test]
 			public void PrintStatementBaseTest()
 			{
+				var clockMock = new Mock<IClock>();
+				clockMock.SetupSequence(x => x.DateTimeNowAsString())
+					.Returns("10/01/2012")
+					.Returns("13/01/2012")
+					.Returns("14/01/2012");
+
+				var transactionRep = new TransactionInMemoryRepository(clockMock.Object);
 				var outputWriter = new Mock<IOutputWriter>();
-				var account = new StudentAccount(1);
+				var account = new StudentAccount(1, transactionRep);
 
 				account.Deposit(1000);
 				account.Deposit(2000);
