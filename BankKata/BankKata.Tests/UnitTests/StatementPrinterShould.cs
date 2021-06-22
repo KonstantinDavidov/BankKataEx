@@ -6,6 +6,7 @@ using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using BankKata.Contracts.Builders;
 
 namespace BankKata.Tests.UnitTests
 {
@@ -28,6 +29,26 @@ namespace BankKata.Tests.UnitTests
 			statement.Print(_emptyCollectionTransactions);
 
 			_outputWriterMock.Verify(x => x.Write(Constants.StatementHeader));
+		}
+
+		[Test]
+		public void Should_always_print_statement_in_reverse_order()
+		{
+			var statement = new StatementPrinter(_outputWriterMock.Object);
+
+			var transactions = new List<Transaction>
+			{
+				TransactionBuilder.Transaction().With(1000).With("01/04/2014").Build(),
+				TransactionBuilder.Transaction().With(-100).With("02/04/2014").Build(),
+				TransactionBuilder.Transaction().With(500).With("10/04/2014").Build()
+			};
+
+			statement.Print(transactions);
+
+			_outputWriterMock.Verify(x => x.Write(Constants.StatementHeader));
+			_outputWriterMock.Verify(x => x.Write("10/04/2014 || 500 || 1400"));
+			_outputWriterMock.Verify(x => x.Write("02/04/2014 || -100 || 900"));
+			_outputWriterMock.Verify(x => x.Write("01/04/2014 || 1000 || 1000"));
 		}
 	}
 }
