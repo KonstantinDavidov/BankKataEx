@@ -1,4 +1,5 @@
-﻿using BankKata.Contracts.Exceptions;
+﻿using System.Collections.Generic;
+using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Formatters;
 using BankKata.Contracts.Interfaces;
 using BankKata.Contracts.Models;
@@ -59,6 +60,22 @@ namespace BankKata.Tests.UnitTests
 			var account = CreateAccountEntity(transactionMoq, Statement);
 
 			Assert.Throws<WithdrawNotAllowedException>(() => account.Withdraw(-100));
+		}
+
+		[Test]
+		public void Should_print_statement()
+		{
+			var clockMock = new Mock<IClock>();
+			var transactions = new List<Transaction> { new Transaction(clockMock.Object.DateTimeNowAsString(), 123) };
+			var repositoryMoq = new Mock<ITransactionStorage>();
+			repositoryMoq.Setup(repository => repository.AllTransactions()).Returns(transactions);
+			var statementMoq = new Mock<IStatementPrinter>();
+
+			var account = CreateAccountEntity(repositoryMoq, statementMoq.Object);
+
+			account.PrintStatement();
+
+			statementMoq.Verify(x => x.Print(transactions));
 		}
 	}
 }
