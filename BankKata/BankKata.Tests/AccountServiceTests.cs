@@ -68,6 +68,17 @@ namespace BankKata.Tests
 			Assert.Throws<WithdrawNotAllowedException>(() => _accountService.WithdrawalFromAccount(account.Id, new AccountWithdrawalRequest(amount)));
 		}
 
+		[TestCaseSource(nameof(CreateAccountTypes), new object[] { true })]
+		public void AccountBalance_can_do_deposits(AccountCreateRequest createRequest)
+		{
+			var account = _accountService.Create(createRequest);
+
+			const int depositAmount = 1000;
+			_accountService.DepositToAccount(account.Id, new AccountDepositRequest { Amount = depositAmount });
+
+			Assert.AreEqual(depositAmount, _accountService.GetAccountBalance(account.Id));
+		}
+
 		#region TestData
 		private static IEnumerable<AccountCreateRequest> CreateAccountTypes(bool isHappyPath)
 		{

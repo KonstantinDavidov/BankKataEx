@@ -52,5 +52,18 @@ namespace BankKata.Infrastructure
 
 			return account.Balance;
 		}
+
+		public void DepositToAccount(int accountId, AccountDepositRequest depositRequest)
+		{
+			if (depositRequest == null)
+				throw new ArgumentNullException(nameof(depositRequest));
+
+			if (depositRequest.Amount <= 0)
+				throw new InvalidOperationException("Deposit amount should be a positive number.");
+
+			var account = _bankAccountStorage.GetById(accountId);
+
+			account.Deposit(depositRequest.Amount);
+		}
 	}
 }
