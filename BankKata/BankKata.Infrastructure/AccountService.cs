@@ -5,6 +5,7 @@ using BankKata.Infrastructure.Contracts;
 using BankKata.Infrastructure.Dtos;
 using BankKata.Infrastructure.RequestModels;
 using System;
+using System.Collections.Generic;
 using BankKata.Contracts.Exceptions;
 
 namespace BankKata.Infrastructure
@@ -125,6 +126,18 @@ namespace BankKata.Infrastructure
 
 				throw;
 			}
+		}
+
+		public IEnumerable<string> GetAccountStatement(int accountId)
+		{
+			var account = _bankAccountStorage.GetById(accountId);
+
+			if (account == null)
+			{
+				throw new EntityNotFoundException($"Account with Id: {accountId} was not found.");
+			}
+
+			return account.GetStatementList();
 		}
 	}
 }

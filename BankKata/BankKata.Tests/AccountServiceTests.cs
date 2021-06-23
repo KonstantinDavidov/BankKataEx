@@ -52,7 +52,7 @@ namespace BankKata.Tests
 		}
 
 		[TestCaseSource(nameof(NegativeBalance_TestData), new object[] { true })]
-		public int AccountBalance_negativeBalanceAllowed(AccountCreateRequest createRequest, int amount)
+		public int NegativeBalanceAllowed(AccountCreateRequest createRequest, int amount)
 		{
 			var account = _accountService.Create(createRequest);
 
@@ -62,7 +62,7 @@ namespace BankKata.Tests
 		}
 
 		[TestCaseSource(nameof(NegativeBalance_TestData), new object[] { false })]
-		public void AccountBalance_negativeBalance_NOT_allowed(AccountCreateRequest createRequest, int amount)
+		public void NegativeBalance_NOT_allowed(AccountCreateRequest createRequest, int amount)
 		{
 			var account = _accountService.Create(createRequest);
 
@@ -70,7 +70,7 @@ namespace BankKata.Tests
 		}
 
 		[TestCaseSource(nameof(CreateAccountTypes), new object[] { true })]
-		public void AccountBalance_can_do_deposits(AccountCreateRequest createRequest)
+		public void Can_do_deposits(AccountCreateRequest createRequest)
 		{
 			var account = _accountService.Create(createRequest);
 
@@ -81,7 +81,7 @@ namespace BankKata.Tests
 		}
 
 		[TestCaseSource(nameof(TransactionBetweenAccounts_TestData), new object[] { true })]
-		public void AccountBalance_transactionBetweenAccountsTest(AccountCreateRequest createRequest1, AccountCreateRequest createRequest2,
+		public void TransactionBetweenAccountsTest(AccountCreateRequest createRequest1, AccountCreateRequest createRequest2,
 			int depositAmountAcc1, int depositAmountAcc2, int transferAmount)
 		{
 			var account1 = _accountService.Create(createRequest1);
@@ -100,7 +100,7 @@ namespace BankKata.Tests
 		}
 
 		[TestCaseSource(nameof(TransactionBetweenAccounts_TestData), new object[] { false })]
-		public void AccountBalance_transactionBetweenAccountsTest_restriction(AccountCreateRequest createRequest1, AccountCreateRequest createRequest2,
+		public void TransactionBetweenAccountsTest_restriction(AccountCreateRequest createRequest1, AccountCreateRequest createRequest2,
 			int depositAmountAcc1, int depositAmountAcc2, int transferAmount)
 		{
 			var account1 = _accountService.Create(createRequest1);
@@ -137,6 +137,48 @@ namespace BankKata.Tests
 					() => _accountService.WithdrawalFromAccount(account1.Id, new AccountWithdrawalRequest(50)),
 					() => _accountService.TransactionBetweenAccounts(account1.Id, account2.Id, new AccountDepositRequest(100)))
 			);
+		}
+
+		[Test]
+		public void Get_statement()
+		{
+			var expectedForAccount1 = new List<string>
+			{
+				"Date || Amount || Balance",
+				"23/06/2021 || -10 || 890",
+				"23/06/2021 || -100 || 900",
+				"23/06/2021 || 500 || 1000",
+				"23/06/2021 || 500 || 500"
+			};
+
+			var expectedForAccount2 = new List<string>
+			{
+				"Date || Amount || Balance",
+				"23/06/2021 || 10 || 110",
+				"23/06/2021 || -100 || 100",
+				"23/06/2021 || 100 || 200",
+				"23/06/2021 || 100 || 100"
+			};
+			const int depositAmountAcc1 = 500;
+			const int depositAmountAcc2 = 100;
+			const int transferAmount = 10;
+			var account1 = _accountService.Create(new AccountCreateRequest.Business(1));
+			var account2 = _accountService.Create(new AccountCreateRequest.Business(2));
+
+			_accountService.DepositToAccount(account1.Id, new AccountDepositRequest(depositAmountAcc1));
+			_accountService.DepositToAccount(account1.Id, new AccountDepositRequest(depositAmountAcc1));
+			_accountService.DepositToAccount(account2.Id, new AccountDepositRequest(depositAmountAcc2));
+			_accountService.DepositToAccount(account2.Id, new AccountDepositRequest(depositAmountAcc2));
+			_accountService.WithdrawalFromAccount(account2.Id, new AccountWithdrawalRequest(depositAmountAcc2));
+			_accountService.WithdrawalFromAccount(account1.Id, new AccountWithdrawalRequest(depositAmountAcc2));
+
+			_accountService.TransactionBetweenAccounts(account1.Id, account2.Id, new AccountDepositRequest(transferAmount));
+
+			var accountStatementAccount1 = _accountService.GetAccountStatement(account1.Id);
+			var accountStatementAccount2 = _accountService.GetAccountStatement(account2.Id);
+
+			CollectionAssert.AreEqual(expectedForAccount1, accountStatementAccount1);
+			CollectionAssert.AreEqual(expectedForAccount2, accountStatementAccount2);
 		}
 
 		#region TestData

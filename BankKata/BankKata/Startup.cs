@@ -11,8 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BankKata.Contracts.Interfaces;
+using BankKata.Contracts.Interfaces.Storages;
+using BankKata.Contracts.Storages;
 using BankKata.Infrastructure;
 using BankKata.Infrastructure.Contracts;
+using BankKata.Infrastructure.Fabrics;
 
 namespace BankKata
 {
@@ -29,6 +33,8 @@ namespace BankKata
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddScoped<IAccountService, AccountService>();
+			services.AddSingleton<IAccountCreationFabric, AccountCreationFabric>();
+			services.AddSingleton<IBankAccountStorage, BankAccountStorage>();
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>

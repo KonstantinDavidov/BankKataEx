@@ -1,4 +1,5 @@
-﻿using BankKata.Contracts.Enums;
+﻿using System.Collections.Generic;
+using BankKata.Contracts.Enums;
 using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Interfaces;
 using BankKata.Contracts.Interfaces.Storages;
@@ -120,6 +121,11 @@ namespace BankKata.Contracts.Models
 			}
 
 			return Balance >= amount;
+		}
+
+		public IEnumerable<string> GetStatementList()
+		{
+			return _statementPrinter.GetStatementLines(_transactionStorage.AllTransactions());
 		}
 
 		#region Equals override

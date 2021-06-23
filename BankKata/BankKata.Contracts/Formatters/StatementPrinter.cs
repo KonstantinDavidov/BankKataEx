@@ -26,7 +26,10 @@ namespace BankKata.Contracts.Formatters
 
 		public IEnumerable<string> GetStatementLines(IEnumerable<Transaction> transactions)
 		{
-			return GetRevertedStatements(transactions);
+			var statementLines = new List<string> { Constants.StatementHeader };
+			statementLines.AddRange(GetRevertedStatements(transactions));
+
+			return statementLines;
 		}
 
 		private void PrintStatementLines(IEnumerable<Transaction> transactions)
