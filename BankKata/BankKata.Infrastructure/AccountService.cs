@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BankKata.Contracts.Enums;
+﻿using BankKata.Contracts.Enums;
 using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Interfaces.Services;
 using BankKata.Contracts.Interfaces.Storages;
+using BankKata.Infrastructure.Contracts;
 using BankKata.Infrastructure.Dtos;
 using BankKata.Infrastructure.RequestModels;
+using System;
 
 namespace BankKata.Infrastructure
 {
@@ -33,6 +31,26 @@ namespace BankKata.Infrastructure
 			_bankAccountStorage.Add(newAccount);
 
 			return new AccountDto(newAccount);
+		}
+
+		public void WithdrawalFromAccount(int accountId, AccountWithdrawalRequest withdrawalRequest)
+		{
+			if (withdrawalRequest == null)
+				throw new ArgumentNullException(nameof(withdrawalRequest));
+
+			if (withdrawalRequest.Amount <= 0)
+				throw new InvalidOperationException("Withdrawal amount should be a positive number.");
+
+			var account = _bankAccountStorage.GetById(accountId);
+
+			account.Withdraw(withdrawalRequest.Amount);
+		}
+
+		public int GetAccountBalance(int accountId)
+		{
+			var account = _bankAccountStorage.GetById(accountId);
+
+			return account.Balance;
 		}
 	}
 }

@@ -5,6 +5,8 @@ using BankKata.Infrastructure.RequestModels;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using BankAccount.Common;
+using BankKata.Contracts.Exceptions;
 
 namespace BankKata.Tests
 {
@@ -48,6 +50,24 @@ namespace BankKata.Tests
 			Assert.AreEqual(3, newAccount3.Id);
 		}
 
+		[TestCaseSource(nameof(NegativeBalance_TestData), new object[] { true })]
+		public int AccountBalance_NegativeBalanceAllowed(AccountCreateRequest createRequest, int amount)
+		{
+			var account = _accountService.Create(createRequest);
+
+			_accountService.WithdrawalFromAccount(account.Id, new AccountWithdrawalRequest(amount));
+
+			return _accountService.GetAccountBalance(account.Id);
+		}
+
+		[TestCaseSource(nameof(NegativeBalance_TestData), new object[] { false })]
+		public void AccountBalance_NegativeBalance_NOT_Allowed(AccountCreateRequest createRequest, int amount)
+		{
+			var account = _accountService.Create(createRequest);
+
+			Assert.Throws<WithdrawNotAllowedException>(() => _accountService.WithdrawalFromAccount(account.Id, new AccountWithdrawalRequest(amount)));
+		}
+
 		#region TestData
 		private static IEnumerable<AccountCreateRequest> CreateAccountTypes(bool isHappyPath)
 		{
@@ -62,6 +82,19 @@ namespace BankKata.Tests
 				yield return new AccountCreateRequest.Business();
 				yield return new AccountCreateRequest.Student();
 				yield return new AccountCreateRequest.Giro { EntityId = 1 };
+			}
+		}
+
+		private static IEnumerable<TestCaseData> NegativeBalance_TestData(bool isNegativeBalanceAllowed)
+		{
+			if (isNegativeBalanceAllowed)
+			{
+				yield return new TestCaseData(new AccountCreateRequest.Business { EntityId = 1 }, Constants.MinAllowedBusinessAccountBalance * -1).Returns(Constants.MinAllowedBusinessAccountBalance);
+				yield return new TestCaseData(new AccountCreateRequest.Giro(), Constants.MinAllowedGiroAccountBalance * -1).Returns(Constants.MinAllowedGiroAccountBalance);
+			}
+			else
+			{
+				yield return new TestCaseData(new AccountCreateRequest.Student { EntityId = 1 }, 500);
 			}
 		}
 		#endregion
