@@ -38,7 +38,7 @@ With some custom requirements:
 The current project uses .NET Core 3.1 version.
 
 ## Usage
-To use a web service, set **BankKata** as startup project. That you can just run the application.
+To use a web service, set **BankKata** as startup project. Then you can just run the application.
 By default, the application starts on https://localhost:5001 + http://localhost:5000
 
 If you use Postman (https://www.postman.com/), you can find Portaman collection for testing the service [here](./BankKata.postman_collection.json)
