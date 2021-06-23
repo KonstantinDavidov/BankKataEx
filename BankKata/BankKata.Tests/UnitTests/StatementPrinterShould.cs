@@ -1,12 +1,12 @@
 ﻿using BankAccount.Common;
-using BankKata.Contracts.Formatters;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Models;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using BankKata.Contracts.Builders;
+using BankKata.Business.Builders;
+using BankKata.Business.Formatters;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Models;
 
 namespace BankKata.Tests.UnitTests
 {

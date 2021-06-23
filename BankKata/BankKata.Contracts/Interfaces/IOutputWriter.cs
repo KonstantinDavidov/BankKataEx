@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BankKata.Contracts.Interfaces
+﻿namespace BankKata.Business.Interfaces
 {
 	public interface IOutputWriter
 	{

@@ -1,12 +1,12 @@
-﻿using BankKata.Contracts.Enums;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Interfaces.Storages;
-using BankKata.Infrastructure.Contracts;
+﻿using BankKata.Infrastructure.Contracts;
 using BankKata.Infrastructure.Dtos;
 using BankKata.Infrastructure.RequestModels;
 using System;
 using System.Collections.Generic;
-using BankKata.Contracts.Exceptions;
+using BankKata.Business.Enums;
+using BankKata.Business.Exceptions;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Interfaces.Storages;
 
 namespace BankKata.Infrastructure
 {

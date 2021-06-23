@@ -1,9 +1,9 @@
 ﻿using BankAccount.Common;
-using BankKata.Contracts.Enums;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Interfaces.Storages;
+using BankKata.Business.Enums;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Interfaces.Storages;
 
-namespace BankKata.Contracts.Models
+namespace BankKata.Business.Models
 {
 	/// <summary>
 	/// Giro: max 4,000.00 negative balance

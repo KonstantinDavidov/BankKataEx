@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BankKata.Contracts.Interfaces
+namespace BankKata.Business.Interfaces
 {
 	public interface IClock
 	{

@@ -1,4 +1,4 @@
-﻿using BankKata.Contracts.Enums;
+﻿using BankKata.Business.Enums;
 
 namespace BankKata.Infrastructure.RequestModels
 {

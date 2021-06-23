@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using BankKata.Contracts;
-using BankKata.Contracts.Enums;
-using BankKata.Contracts.Formatters;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Models;
-using BankKata.Contracts.Storages;
-using BankKata.Contracts.Writers;
+using BankKata.Business;
+using BankKata.Business.Enums;
+using BankKata.Business.Formatters;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Models;
+using BankKata.Business.Storages;
+using BankKata.Business.Writers;
 
 namespace BankKata.Infrastructure.Fabrics
 {

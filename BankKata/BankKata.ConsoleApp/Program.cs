@@ -1,9 +1,9 @@
 ﻿using System;
-using BankKata.Contracts;
-using BankKata.Contracts.Formatters;
-using BankKata.Contracts.Models;
-using BankKata.Contracts.Storages;
-using BankKata.Contracts.Writers;
+using BankKata.Business;
+using BankKata.Business.Formatters;
+using BankKata.Business.Models;
+using BankKata.Business.Storages;
+using BankKata.Business.Writers;
 
 namespace BankKata.ConsoleApp
 {

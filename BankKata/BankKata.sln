@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankKata.ConsoleApp", "Bank
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankKata.Tests", "BankKata.Tests\BankKata.Tests.csproj", "{E1961C14-0C73-486E-947F-2B0EB870739B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankKata.Contracts", "BankKata.Contracts\BankKata.Contracts.csproj", "{F936C2F0-AAF2-48FD-9034-A3304D10C7C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankKata.Business", "BankKata.Contracts\BankKata.Business.csproj", "{F936C2F0-AAF2-48FD-9034-A3304D10C7C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankAccount.Shared", "BankAccount.Common\BankAccount.Shared.csproj", "{A06D8A74-30AC-42A8-8034-EAA41E7FED2E}"
 EndProject

@@ -1,4 +1,4 @@
-﻿namespace BankKata.Contracts.Enums
+﻿namespace BankKata.Business.Enums
 {
 	public enum AccountType
 	{

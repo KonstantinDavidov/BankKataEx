@@ -1,7 +1,7 @@
-﻿using BankKata.Contracts.Interfaces;
-using System;
+﻿using System;
+using BankKata.Business.Interfaces;
 
-namespace BankKata.Contracts.Writers
+namespace BankKata.Business.Writers
 {
 	public sealed class ConsoleOutputWriter : IOutputWriter
 	{

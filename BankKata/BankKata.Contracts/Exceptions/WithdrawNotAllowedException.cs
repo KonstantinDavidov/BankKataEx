@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BankKata.Contracts.Exceptions
+namespace BankKata.Business.Exceptions
 {
 	public class WithdrawNotAllowedException : Exception
 	{

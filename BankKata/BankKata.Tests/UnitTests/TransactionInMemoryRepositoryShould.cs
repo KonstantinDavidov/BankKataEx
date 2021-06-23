@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using BankAccount.Common;
-using BankKata.Contracts.Builders;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Storages;
+using BankKata.Business.Builders;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Storages;
 using Moq;
 using NUnit.Framework;
 

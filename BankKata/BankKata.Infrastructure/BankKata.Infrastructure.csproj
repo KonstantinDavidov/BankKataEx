@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BankKata.Contracts\BankKata.Contracts.csproj" />
+    <ProjectReference Include="..\BankKata.Contracts\BankKata.Business.csproj" />
   </ItemGroup>
 
 </Project>

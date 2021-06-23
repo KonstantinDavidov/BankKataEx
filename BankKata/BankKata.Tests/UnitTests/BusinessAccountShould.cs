@@ -1,7 +1,7 @@
 ﻿using BankAccount.Common;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Interfaces.Storages;
-using BankKata.Contracts.Models;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Interfaces.Storages;
+using BankKata.Business.Models;
 using Moq;
 
 namespace BankKata.Tests.UnitTests

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using BankKata.Contracts.Enums;
-using BankKata.Contracts.Exceptions;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Interfaces.Storages;
+using BankKata.Business.Enums;
+using BankKata.Business.Exceptions;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Interfaces.Storages;
 
-namespace BankKata.Contracts.Models
+namespace BankKata.Business.Models
 {
 	public abstract class Account
 	{

@@ -1,6 +1,6 @@
-﻿using BankKata.Contracts.Models;
+﻿using BankKata.Business.Models;
 
-namespace BankKata.Contracts.Builders
+namespace BankKata.Business.Builders
 {
 	public class TransactionBuilder
 	{

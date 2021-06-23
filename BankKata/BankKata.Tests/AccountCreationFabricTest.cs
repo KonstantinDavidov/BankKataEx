@@ -1,7 +1,7 @@
-﻿using BankKata.Contracts.Enums;
-using BankKata.Infrastructure.Fabrics;
+﻿using BankKata.Infrastructure.Fabrics;
 using NUnit.Framework;
 using System;
+using BankKata.Business.Enums;
 
 namespace BankKata.Tests
 {

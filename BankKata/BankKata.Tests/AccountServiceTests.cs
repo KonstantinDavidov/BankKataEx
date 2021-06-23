@@ -1,5 +1,4 @@
-﻿using BankKata.Contracts.Storages;
-using BankKata.Infrastructure;
+﻿using BankKata.Infrastructure;
 using BankKata.Infrastructure.Fabrics;
 using BankKata.Infrastructure.RequestModels;
 using NUnit.Framework;
@@ -7,7 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BankAccount.Common;
-using BankKata.Contracts.Exceptions;
+using BankKata.Business.Exceptions;
+using BankKata.Business.Storages;
 
 namespace BankKata.Tests
 {
@@ -111,32 +111,6 @@ namespace BankKata.Tests
 
 			Assert.Throws<WithdrawNotAllowedException>(() =>
 				_accountService.TransactionBetweenAccounts(account1.Id, account2.Id, new AccountDepositRequest(transferAmount)));
-		}
-
-		[Test]
-		[Repeat(10000)]
-		public void AccountBalance_transactionBetweenAccounts_parallelTest()
-		{
-			var account1 = _accountService.Create(new AccountCreateRequest.Student(1));
-			var account2 = _accountService.Create(new AccountCreateRequest.Student(2));
-
-			_accountService.DepositToAccount(account1.Id, new AccountDepositRequest(100));
-			_accountService.DepositToAccount(account2.Id, new AccountDepositRequest(100));
-
-			Console.WriteLine("Try to Withdrawal with transfer operation.");
-			Assert.Throws<AggregateException>(() =>
-				Parallel.Invoke(new ParallelOptions { MaxDegreeOfParallelism = 4 },
-					() => _accountService.TransactionBetweenAccounts(account1.Id, account2.Id, new AccountDepositRequest(100)),
-					() => _accountService.WithdrawalFromAccount(account1.Id, new AccountWithdrawalRequest(50)))
-			);
-
-			Console.WriteLine("Try to transfer at the same time as Withdrawal happens.");
-
-			Assert.Throws<AggregateException>(() =>
-				Parallel.Invoke(new ParallelOptions { MaxDegreeOfParallelism = 4 },
-					() => _accountService.WithdrawalFromAccount(account1.Id, new AccountWithdrawalRequest(50)),
-					() => _accountService.TransactionBetweenAccounts(account1.Id, account2.Id, new AccountDepositRequest(100)))
-			);
 		}
 
 		[Test]

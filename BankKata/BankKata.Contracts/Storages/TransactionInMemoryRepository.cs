@@ -1,9 +1,9 @@
-﻿using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Models;
-using System.Collections.Generic;
-using BankKata.Contracts.Interfaces.Storages;
+﻿using System.Collections.Generic;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Interfaces.Storages;
+using BankKata.Business.Models;
 
-namespace BankKata.Contracts.Storages
+namespace BankKata.Business.Storages
 {
 	public class TransactionInMemoryRepository : ITransactionStorage
 	{

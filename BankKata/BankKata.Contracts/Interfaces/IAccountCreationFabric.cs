@@ -1,7 +1,7 @@
-﻿using BankKata.Contracts.Enums;
-using BankKata.Contracts.Models;
+﻿using BankKata.Business.Enums;
+using BankKata.Business.Models;
 
-namespace BankKata.Contracts.Interfaces
+namespace BankKata.Business.Interfaces
 {
 	public interface IAccountCreationFabric
 	{

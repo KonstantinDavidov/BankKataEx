@@ -1,10 +1,10 @@
-﻿using BankKata.Contracts.Interfaces.Storages;
-using BankKata.Contracts.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using BankKata.Contracts.Exceptions;
+using BankKata.Business.Exceptions;
+using BankKata.Business.Interfaces.Storages;
+using BankKata.Business.Models;
 
-namespace BankKata.Contracts.Storages
+namespace BankKata.Business.Storages
 {
 	public class BankAccountStorage : IBankAccountStorage
 	{

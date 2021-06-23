@@ -1,10 +1,10 @@
-﻿using BankKata.Contracts.Formatters;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Models;
-using BankKata.Contracts.Storages;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using System;
+using BankKata.Business.Formatters;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Models;
+using BankKata.Business.Storages;
 
 namespace BankKata.Tests
 {

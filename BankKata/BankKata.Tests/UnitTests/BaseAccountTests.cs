@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using BankAccount.Common;
-using BankKata.Contracts.Exceptions;
-using BankKata.Contracts.Formatters;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Interfaces.Storages;
-using BankKata.Contracts.Models;
+using BankKata.Business.Exceptions;
+using BankKata.Business.Formatters;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Interfaces.Storages;
+using BankKata.Business.Models;
 using Moq;
 using NUnit.Framework;
 

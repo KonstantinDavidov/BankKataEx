@@ -1,5 +1,5 @@
-﻿using BankKata.Contracts;
-using System;
+﻿using System;
+using BankKata.Business;
 
 namespace BankKata.Tests.Fakes
 {

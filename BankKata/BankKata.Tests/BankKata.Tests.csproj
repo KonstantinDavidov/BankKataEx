@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BankKata.Contracts\BankKata.Contracts.csproj" />
+    <ProjectReference Include="..\BankKata.Contracts\BankKata.Business.csproj" />
     <ProjectReference Include="..\BankKata.Infrastructure\BankKata.Infrastructure.csproj" />
   </ItemGroup>
 

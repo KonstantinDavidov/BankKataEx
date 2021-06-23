@@ -1,8 +1,8 @@
-﻿using BankKata.Contracts.Interfaces;
-using System;
+﻿using System;
 using System.Globalization;
+using BankKata.Business.Interfaces;
 
-namespace BankKata.Contracts
+namespace BankKata.Business
 {
 	public class Clock : IClock
 	{

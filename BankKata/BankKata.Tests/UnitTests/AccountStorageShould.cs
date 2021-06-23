@@ -1,7 +1,7 @@
-﻿using BankKata.Contracts.Exceptions;
-using BankKata.Contracts.Storages;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
+using BankKata.Business.Exceptions;
+using BankKata.Business.Storages;
 
 namespace BankKata.Tests.UnitTests
 {

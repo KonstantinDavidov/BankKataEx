@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BankKata.Contracts.Models
+namespace BankKata.Business.Models
 {
 	public class Transaction
 	{

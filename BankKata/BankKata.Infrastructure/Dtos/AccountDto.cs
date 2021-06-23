@@ -1,6 +1,6 @@
-﻿using BankKata.Contracts.Enums;
-using BankKata.Contracts.Models;
-using System;
+﻿using System;
+using BankKata.Business.Enums;
+using BankKata.Business.Models;
 
 namespace BankKata.Infrastructure.Dtos
 {

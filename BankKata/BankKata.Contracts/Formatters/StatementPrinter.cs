@@ -1,12 +1,11 @@
-﻿using BankAccount.Common;
-using BankKata.Contracts.Interfaces;
-using BankKata.Contracts.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using BankAccount.Common;
+using BankKata.Business.Interfaces;
+using BankKata.Business.Models;
 
-namespace BankKata.Contracts.Formatters
+namespace BankKata.Business.Formatters
 {
 	public class StatementPrinter : IStatementPrinter
 	{

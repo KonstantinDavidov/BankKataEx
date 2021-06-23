@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace BankKata.Contracts.Exceptions
+namespace BankKata.Business.Exceptions
 {
 	public class EntityNotFoundException : Exception
 	{
