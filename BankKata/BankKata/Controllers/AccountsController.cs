@@ -112,7 +112,7 @@ namespace BankKata.Controllers
 		/// </summary>
 		/// <param name="id">Account Id</param>
 		/// <returns>List of statement records in String format.</returns>
-		[HttpPut("{id}/statement")]
+		[HttpGet("{id}/statement")]
 		public IEnumerable<string> GetAccountStatement([FromRoute] int id)
 		{
 			return _bankAccountService.GetAccountStatement(id);
