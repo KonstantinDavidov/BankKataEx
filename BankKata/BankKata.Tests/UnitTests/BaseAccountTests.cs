@@ -71,7 +71,8 @@ namespace BankKata.Tests.UnitTests
 		public void Should_print_statement()
 		{
 			var clockMock = new Mock<IClock>();
-			var transactions = new List<Transaction> { new Transaction(clockMock.Object.DateTimeNowAsString(), 123) };
+			var amount = 123;
+			var transactions = new List<Transaction> { new Transaction(clockMock.Object.DateTimeNowAsString(), amount) };
 			var repositoryMoq = new Mock<ITransactionStorage>();
 			repositoryMoq.Setup(repository => repository.AllTransactions()).Returns(transactions);
 			var statementMoq = new Mock<IStatementPrinter>();
