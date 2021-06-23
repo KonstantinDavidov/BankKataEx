@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BankAccount.Common;
 using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Formatters;
 using BankKata.Contracts.Interfaces;
@@ -11,6 +12,10 @@ namespace BankKata.Tests.UnitTests
 	public abstract class BaseAccountTests
 	{
 		protected StatementPrinter Statement;
+
+		//Created a field here that I will override in child tests,
+		//because I want to keep Account.MinAllowedBalance encapsulated (it's a protected field now.)
+		protected virtual int MinAllowedBalance => 0;
 
 		protected abstract Account CreateAccountEntity(Mock<ITransactionStorage> transactionMoq, IStatementPrinter statementPrinter);
 
@@ -76,6 +81,38 @@ namespace BankKata.Tests.UnitTests
 			account.PrintStatement();
 
 			statementMoq.Verify(x => x.Print(transactions));
+		}
+
+		[Test]
+		public void Should_have_restricted_negative_balance()
+		{
+			//we need this, because I don't allow Withdraw(0), because it doesn't make sense.
+			var depositAmount = 100;
+			var withdrawAmount = MinAllowedBalance - depositAmount;
+			var transactionMoq = new Mock<ITransactionStorage>();
+			var account = CreateAccountEntity(transactionMoq, Statement);
+
+			Assert.AreEqual(0, account.Balance);
+			
+			account.Deposit(depositAmount);
+			Assert.AreEqual(depositAmount, account.Balance);
+			
+			//Withdraw takes only positive numbers, to reuse constant, I multiply to -1 to make it positive.
+			Assert.DoesNotThrow(() => account.Withdraw(withdrawAmount * -1));
+
+			Assert.AreEqual(MinAllowedBalance, account.Balance);
+		}
+
+		[Test]
+		public void Should_not_allow_to_have_less_than_max_negative_balance()
+		{
+			var transactionMoq = new Mock<ITransactionStorage>();
+			var account = CreateAccountEntity(transactionMoq, Statement);
+
+			Assert.AreEqual(0, account.Balance);
+
+			var amount = (MinAllowedBalance - 1) * -1; //Try to withdraw more than allowed negative balance. It should not be allowed.
+			Assert.Throws<WithdrawNotAllowedException>(() => account.Withdraw(amount));
 		}
 	}
 }

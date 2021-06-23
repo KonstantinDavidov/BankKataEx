@@ -5,12 +5,12 @@ using BankKata.Contracts.Interfaces;
 namespace BankKata.Contracts.Models
 {
 	/// <summary>
-	/// Business 100,000.00
+	/// Business: max 100,000.00 negative balance
 	/// When creating a business account, a business id number must be provided
 	/// </summary>
 	public class BusinessAccount : Account
 	{
-		protected override int MaxAllowedBalance => Constants.MaxAllowedBusinessAccountBalance;
+		protected override int MinAllowedBalance => Constants.MinAllowedBusinessAccountBalance;
 		public override AccountType AccountType => AccountType.Business;
 
 		public int BusinessId { get; }
