@@ -3,6 +3,7 @@ using BankAccount.Common;
 using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Formatters;
 using BankKata.Contracts.Interfaces;
+using BankKata.Contracts.Interfaces.Storages;
 using BankKata.Contracts.Models;
 using Moq;
 using NUnit.Framework;

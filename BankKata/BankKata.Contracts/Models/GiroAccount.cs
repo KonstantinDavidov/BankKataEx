@@ -1,6 +1,7 @@
 ﻿using BankAccount.Common;
 using BankKata.Contracts.Enums;
 using BankKata.Contracts.Interfaces;
+using BankKata.Contracts.Interfaces.Storages;
 
 namespace BankKata.Contracts.Models
 {

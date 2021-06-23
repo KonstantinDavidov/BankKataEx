@@ -1,6 +1,7 @@
 ﻿using BankKata.Contracts.Interfaces;
 using BankKata.Contracts.Models;
 using System.Collections.Generic;
+using BankKata.Contracts.Interfaces.Storages;
 
 namespace BankKata.Contracts.Storages
 {

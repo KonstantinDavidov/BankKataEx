@@ -1,5 +1,6 @@
 ﻿using BankAccount.Common;
 using BankKata.Contracts.Interfaces;
+using BankKata.Contracts.Interfaces.Storages;
 using BankKata.Contracts.Models;
 using Moq;
 

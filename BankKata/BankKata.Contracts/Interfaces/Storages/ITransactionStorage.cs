@@ -1,9 +1,7 @@
-﻿using System;
+﻿using BankKata.Contracts.Models;
 using System.Collections.Generic;
-using System.Text;
-using BankKata.Contracts.Models;
 
-namespace BankKata.Contracts.Interfaces
+namespace BankKata.Contracts.Interfaces.Storages
 {
 	public interface ITransactionStorage
 	{

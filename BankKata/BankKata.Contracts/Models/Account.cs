@@ -1,6 +1,7 @@
 ﻿using BankKata.Contracts.Enums;
 using BankKata.Contracts.Exceptions;
 using BankKata.Contracts.Interfaces;
+using BankKata.Contracts.Interfaces.Storages;
 
 namespace BankKata.Contracts.Models
 {
@@ -21,6 +22,10 @@ namespace BankKata.Contracts.Models
 			Id = id;
 			_transactionStorage = transactionStorage;
 			_statementPrinter = statementPrinter;
+		}
+
+		protected Account()
+		{
 		}
 
 		public void Deposit(int amount)
@@ -76,5 +81,27 @@ namespace BankKata.Contracts.Models
 
 			return balanceAfterDeposit <= MaxAllowedBalance;
 		}
+
+		#region Equals override
+
+		protected bool Equals(Account other)
+		{
+			return Id == other.Id;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != this.GetType()) return false;
+			return Equals((Account)obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return Id;
+		}
+
+		#endregion
 	}
 }
