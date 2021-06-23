@@ -36,6 +36,18 @@ namespace BankKata.Tests
 			Assert.Throws<InvalidOperationException>(() => _accountService.Create(createRequest));
 		}
 
+		[TestCaseSource(nameof(CreateAccountTypes), new object[] { true })]
+		public void CreateAccount_Increments_Ids(AccountCreateRequest createRequest)
+		{
+			var newAccount1 = _accountService.Create(createRequest);
+			var newAccount2 = _accountService.Create(createRequest);
+			var newAccount3 = _accountService.Create(createRequest);
+
+			Assert.AreEqual(1, newAccount1.Id);
+			Assert.AreEqual(2, newAccount2.Id);
+			Assert.AreEqual(3, newAccount3.Id);
+		}
+
 		#region TestData
 		private static IEnumerable<AccountCreateRequest> CreateAccountTypes(bool isHappyPath)
 		{
