@@ -9,11 +9,13 @@ namespace BankKata.Contracts.Models
 
 		public string Date => _date;
 		public int Amount => _amount;
+		public int Id { get; }
 
-		public Transaction(string dateStr, int amount)
+		public Transaction(int id, string dateStr, int amount)
 		{
 			_date = dateStr;
 			_amount = amount;
+			Id = id;
 		}
 
 		protected bool Equals(Transaction other)

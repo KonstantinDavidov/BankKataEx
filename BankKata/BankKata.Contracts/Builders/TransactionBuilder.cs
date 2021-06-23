@@ -24,9 +24,9 @@ namespace BankKata.Contracts.Builders
 			return this;
 		}
 
-		public Transaction Build()
+		public Transaction Build(int id)
 		{
-			return new Transaction(_dateStr, _amount);
+			return new Transaction(id, _dateStr, _amount);
 		}
 	}
 }

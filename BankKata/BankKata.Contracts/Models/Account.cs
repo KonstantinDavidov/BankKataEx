@@ -28,7 +28,7 @@ namespace BankKata.Contracts.Models
 		{
 		}
 
-		public void Deposit(int amount)
+		public int Deposit(int amount)
 		{
 			if (amount <= 0)
 			{
@@ -41,10 +41,10 @@ namespace BankKata.Contracts.Models
 			}
 
 			Balance += amount;
-			_transactionStorage.Add(amount);
+			return _transactionStorage.Add(amount);
 		}
 		
-		public void Withdraw(int amount)
+		public int Withdraw(int amount)
 		{
 			if (amount <= 0)
 			{
@@ -57,7 +57,21 @@ namespace BankKata.Contracts.Models
 			}
 
 			Balance -= amount;
-			_transactionStorage.Add(-amount);
+			return _transactionStorage.Add(-amount);
+		}
+
+		public void WithdrawRollback(int transactionId)
+		{
+			var transactionForRollback = _transactionStorage.GetById(transactionId);
+			Balance += transactionForRollback.Amount;
+			_transactionStorage.DeleteById(transactionForRollback);
+		}
+
+		public void DepositRollback(int transactionId)
+		{
+			var transactionForRollback = _transactionStorage.GetById(transactionId);
+			Balance -= transactionForRollback.Amount;
+			_transactionStorage.DeleteById(transactionForRollback);
 		}
 
 		public void PrintStatement()
@@ -68,18 +82,44 @@ namespace BankKata.Contracts.Models
 		/// <summary>
 		/// Validates whether a withdrawal operation allowed or not.
 		/// </summary>
-		private bool IsWithdrawAllowed(int amount)
+		public bool IsWithdrawAllowed(int amount)
 		{
+			if (amount <= 0)
+			{
+				throw new WithdrawNotAllowedException(nameof(amount));
+			}
+
 			var balanceAfterWithdrawal = Balance - amount;
 
 			return balanceAfterWithdrawal >= MinAllowedBalance;
 		}
 
-		private bool IsDepositAllowed(int amount)
+		public bool IsDepositAllowed(int amount)
 		{
+			if (amount <= 0)
+			{
+				throw new DepositNotAllowedException(nameof(amount));
+			}
+
 			var balanceAfterDeposit = Balance + amount;
 
 			return balanceAfterDeposit <= MaxAllowedBalance;
+		}
+
+		/// <summary>
+		/// Validates whether transfer money to other account allowed or not.
+		/// We need this method, because sometimes accounts may have negative balance (for example, Business Account).
+		/// In this case system should NOT allow to send money to other accounts,
+		/// because if balance is less than Amount (which is always positive), there is lack of money to send to other accounts :(
+		/// </summary>
+		public bool IsTransferToOtherAccountAllowed(int amount)
+		{
+			if (amount <= 0)
+			{
+				throw new DepositNotAllowedException(nameof(amount));
+			}
+
+			return Balance >= amount;
 		}
 
 		#region Equals override

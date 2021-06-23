@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BankKata.Infrastructure;
+using BankKata.Infrastructure.Contracts;
 
 namespace BankKata
 {
@@ -26,6 +28,7 @@ namespace BankKata
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddScoped<IAccountService, AccountService>();
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>

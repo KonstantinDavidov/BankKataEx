@@ -15,15 +15,32 @@ namespace BankKata.Contracts.Storages
 			_clock = clock;
 		}
 
-		public void Add(int amount)
+		public int Add(int amount)
 		{
-			var transaction = new Transaction(_clock.DateTimeNowAsString(), amount);
+			var transaction = new Transaction(GetNextId(), _clock.DateTimeNowAsString(), amount);
 			_transactions.Add(transaction);
+
+			return transaction.Id;
+		}
+
+		public Transaction GetById(int id)
+		{
+			return _transactions.Find(x => x.Id == id);
+		}
+
+		public bool DeleteById(Transaction transaction)
+		{
+			return _transactions.Remove(transaction);
 		}
 
 		public List<Transaction> AllTransactions()
 		{
 			return _transactions;
+		}
+
+		private int GetNextId()
+		{
+			return _transactions.Count + 1;
 		}
 	}
 }

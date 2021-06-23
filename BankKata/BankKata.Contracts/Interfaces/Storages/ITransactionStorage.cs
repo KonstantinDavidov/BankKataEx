@@ -5,7 +5,9 @@ namespace BankKata.Contracts.Interfaces.Storages
 {
 	public interface ITransactionStorage
 	{
-		void Add(int amount);
+		int Add(int amount);
+		Transaction GetById(int id);
 		List<Transaction> AllTransactions();
+		bool DeleteById(Transaction transaction);
 	}
 }

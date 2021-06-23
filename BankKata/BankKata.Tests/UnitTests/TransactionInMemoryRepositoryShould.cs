@@ -1,4 +1,5 @@
-﻿using BankAccount.Common;
+﻿using System.Linq;
+using BankAccount.Common;
 using BankKata.Contracts.Builders;
 using BankKata.Contracts.Interfaces;
 using BankKata.Contracts.Storages;
@@ -21,9 +22,10 @@ namespace BankKata.Tests.UnitTests
 		}
 
 		[Test]
-		public void Create_And_Store_A_Deposit_Transaction()
+		public void Create_and_store_a_deposit_transaction()
 		{
-			_repository.Add(12345);
+			const int depositAmount = 12345;
+			_repository.Add(depositAmount);
 			var result = _repository.AllTransactions();
 
 			Assert.AreEqual(1, result.Count);
@@ -31,16 +33,17 @@ namespace BankKata.Tests.UnitTests
 
 			var actual = TransactionBuilder.Transaction()
 				.With(_clockMoq.Object.DateTimeNowAsString())
-				.With(12345)
-				.Build();
+				.With(depositAmount)
+				.Build(1);
 
 			Assert.AreEqual(currentTransaction, actual);
 		}
 
 		[Test]
-		public void Create_And_Store_A_Withdraw_Transaction()
+		public void Create_and_store_a_withdraw_transaction()
 		{
-			_repository.Add(-12345);
+			const int withdrawAmount = -12345;
+			_repository.Add(withdrawAmount);
 			var result = _repository.AllTransactions();
 
 			Assert.AreEqual(1, result.Count);
@@ -48,10 +51,25 @@ namespace BankKata.Tests.UnitTests
 			var expected = result[0];
 			var actual = TransactionBuilder.Transaction()
 				.With(_clockMoq.Object.DateTimeNowAsString())
-				.With(-12345)
-				.Build();
+				.With(withdrawAmount)
+				.Build(1);
 
 			Assert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void Create_should_increment_id()
+		{
+			const int withdrawAmount = -12345;
+			_repository.Add(withdrawAmount);
+			_repository.Add(withdrawAmount);
+			_repository.Add(withdrawAmount);
+
+			var result = _repository.AllTransactions().OrderBy(x => x.Id).ToList();
+
+			Assert.AreEqual(1, result[0].Id);
+			Assert.AreEqual(2, result[1].Id);
+			Assert.AreEqual(3, result[2].Id);
 		}
 	}
 }

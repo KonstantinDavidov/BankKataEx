@@ -5,6 +5,7 @@ using BankKata.Infrastructure.RequestModels;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BankAccount.Common;
 using BankKata.Contracts.Exceptions;
 
@@ -39,7 +40,7 @@ namespace BankKata.Tests
 		}
 
 		[TestCaseSource(nameof(CreateAccountTypes), new object[] { true })]
-		public void CreateAccount_Increments_Ids(AccountCreateRequest createRequest)
+		public void CreateAccount_increments_ids(AccountCreateRequest createRequest)
 		{
 			var newAccount1 = _accountService.Create(createRequest);
 			var newAccount2 = _accountService.Create(createRequest);
@@ -51,7 +52,7 @@ namespace BankKata.Tests
 		}
 
 		[TestCaseSource(nameof(NegativeBalance_TestData), new object[] { true })]
-		public int AccountBalance_NegativeBalanceAllowed(AccountCreateRequest createRequest, int amount)
+		public int AccountBalance_negativeBalanceAllowed(AccountCreateRequest createRequest, int amount)
 		{
 			var account = _accountService.Create(createRequest);
 
@@ -61,7 +62,7 @@ namespace BankKata.Tests
 		}
 
 		[TestCaseSource(nameof(NegativeBalance_TestData), new object[] { false })]
-		public void AccountBalance_NegativeBalance_NOT_Allowed(AccountCreateRequest createRequest, int amount)
+		public void AccountBalance_negativeBalance_NOT_allowed(AccountCreateRequest createRequest, int amount)
 		{
 			var account = _accountService.Create(createRequest);
 
@@ -77,6 +78,65 @@ namespace BankKata.Tests
 			_accountService.DepositToAccount(account.Id, new AccountDepositRequest { Amount = depositAmount });
 
 			Assert.AreEqual(depositAmount, _accountService.GetAccountBalance(account.Id));
+		}
+
+		[TestCaseSource(nameof(TransactionBetweenAccounts_TestData), new object[] { true })]
+		public void AccountBalance_transactionBetweenAccountsTest(AccountCreateRequest createRequest1, AccountCreateRequest createRequest2,
+			int depositAmountAcc1, int depositAmountAcc2, int transferAmount)
+		{
+			var account1 = _accountService.Create(createRequest1);
+			var account2 = _accountService.Create(createRequest2);
+
+			_accountService.DepositToAccount(account1.Id, new AccountDepositRequest(depositAmountAcc1));
+			_accountService.DepositToAccount(account2.Id, new AccountDepositRequest(depositAmountAcc2));
+
+			_accountService.TransactionBetweenAccounts(account1.Id, account2.Id, new AccountDepositRequest(transferAmount));
+
+			var balance1 = _accountService.GetAccountBalance(account1.Id);
+			var balance2 = _accountService.GetAccountBalance(account2.Id);
+
+			Assert.AreEqual(depositAmountAcc1 - transferAmount, balance1);
+			Assert.AreEqual(depositAmountAcc2 + transferAmount, balance2);
+		}
+
+		[TestCaseSource(nameof(TransactionBetweenAccounts_TestData), new object[] { false })]
+		public void AccountBalance_transactionBetweenAccountsTest_restriction(AccountCreateRequest createRequest1, AccountCreateRequest createRequest2,
+			int depositAmountAcc1, int depositAmountAcc2, int transferAmount)
+		{
+			var account1 = _accountService.Create(createRequest1);
+			var account2 = _accountService.Create(createRequest2);
+
+			_accountService.DepositToAccount(account1.Id, new AccountDepositRequest(depositAmountAcc1));
+			_accountService.DepositToAccount(account2.Id, new AccountDepositRequest(depositAmountAcc2));
+
+			Assert.Throws<WithdrawNotAllowedException>(() =>
+				_accountService.TransactionBetweenAccounts(account1.Id, account2.Id, new AccountDepositRequest(transferAmount)));
+		}
+
+		[Test]
+		[Repeat(10000)]
+		public void AccountBalance_transactionBetweenAccounts_parallelTest()
+		{
+			var account1 = _accountService.Create(new AccountCreateRequest.Student(1));
+			var account2 = _accountService.Create(new AccountCreateRequest.Student(2));
+
+			_accountService.DepositToAccount(account1.Id, new AccountDepositRequest(100));
+			_accountService.DepositToAccount(account2.Id, new AccountDepositRequest(100));
+
+			Console.WriteLine("Try to Withdrawal with transfer operation.");
+			Assert.Throws<AggregateException>(() =>
+				Parallel.Invoke(new ParallelOptions { MaxDegreeOfParallelism = 4 },
+					() => _accountService.TransactionBetweenAccounts(account1.Id, account2.Id, new AccountDepositRequest(100)),
+					() => _accountService.WithdrawalFromAccount(account1.Id, new AccountWithdrawalRequest(50)))
+			);
+
+			Console.WriteLine("Try to transfer at the same time as Withdrawal happens.");
+
+			Assert.Throws<AggregateException>(() =>
+				Parallel.Invoke(new ParallelOptions { MaxDegreeOfParallelism = 4 },
+					() => _accountService.WithdrawalFromAccount(account1.Id, new AccountWithdrawalRequest(50)),
+					() => _accountService.TransactionBetweenAccounts(account1.Id, account2.Id, new AccountDepositRequest(100)))
+			);
 		}
 
 		#region TestData
@@ -106,6 +166,32 @@ namespace BankKata.Tests
 			else
 			{
 				yield return new TestCaseData(new AccountCreateRequest.Student { EntityId = 1 }, 500);
+			}
+		}
+
+		private static IEnumerable<TestCaseData> TransactionBetweenAccounts_TestData(bool isHappyPath)
+		{
+			if (isHappyPath)
+			{
+				yield return new TestCaseData(new AccountCreateRequest.Student(1), new AccountCreateRequest.Student(2), 1000, 1000, 500);
+				yield return new TestCaseData(new AccountCreateRequest.Business(1), new AccountCreateRequest.Business(2), 1000, 1000, 500);
+				yield return new TestCaseData(new AccountCreateRequest.Giro(), new AccountCreateRequest.Giro(), 1000, 1000, 500);
+
+				yield return new TestCaseData(new AccountCreateRequest.Student(1), new AccountCreateRequest.Business(2), 1000, 1000, 500);
+				yield return new TestCaseData(new AccountCreateRequest.Student(1), new AccountCreateRequest.Giro(), 1000, 1000, 500);
+
+				yield return new TestCaseData(new AccountCreateRequest.Business(1), new AccountCreateRequest.Student(2), 1000, 1000, 500);
+				yield return new TestCaseData(new AccountCreateRequest.Business(1), new AccountCreateRequest.Giro(), 1000, 1000, 500);
+
+				yield return new TestCaseData(new AccountCreateRequest.Giro(), new AccountCreateRequest.Student(2), 1000, 1000, 500);
+				yield return new TestCaseData(new AccountCreateRequest.Giro(), new AccountCreateRequest.Business(2), 1000, 1000, 500);
+			}
+			else
+			{
+				//Send more than stored on the deposit
+				yield return new TestCaseData(new AccountCreateRequest.Student(1), new AccountCreateRequest.Student(2), 1000, 1000, 1500);
+				yield return new TestCaseData(new AccountCreateRequest.Business(1), new AccountCreateRequest.Business(2), 1000, 1000, 1500);
+				yield return new TestCaseData(new AccountCreateRequest.Giro(), new AccountCreateRequest.Giro(), 1000, 1000, 1500);
 			}
 		}
 		#endregion

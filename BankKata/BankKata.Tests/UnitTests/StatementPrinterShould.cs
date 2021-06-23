@@ -38,9 +38,9 @@ namespace BankKata.Tests.UnitTests
 
 			var transactions = new List<Transaction>
 			{
-				TransactionBuilder.Transaction().With(1000).With("01/04/2014").Build(),
-				TransactionBuilder.Transaction().With(-100).With("02/04/2014").Build(),
-				TransactionBuilder.Transaction().With(500).With("10/04/2014").Build()
+				TransactionBuilder.Transaction().With(1000).With("01/04/2014").Build(1),
+				TransactionBuilder.Transaction().With(-100).With("02/04/2014").Build(2),
+				TransactionBuilder.Transaction().With(500).With("10/04/2014").Build(3)
 			};
 
 			statement.Print(transactions);
